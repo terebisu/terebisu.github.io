@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OAuth Callback</title>
+</head>
+<body>
+  <h2>認証が完了しました。ウィンドウを閉じてください。</h2>
+  <script>
+    // URLから code を抽出
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+
+    // 親ウィンドウにpostMessageでcodeを送る
+    if (code) {
+      window.opener.postMessage({ type: 'oauth-code', code: code }, '*');
+    } else {
+      console.error('認証コードが見つかりませんでした');
+    }
+
+    // 少し待ってウィンドウを自動で閉じる
+    setTimeout(() => window.close(), 2000);
+  </script>
+</body>
+</html>
